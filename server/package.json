@@ -1,0 +1,40 @@
+{
+  "name": "booktrack",
+  "version": "1.0.0",
+  "description": "A API for a reading books tracking app. ",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup",
+    "start:dev": "tsx watch --clear-screen=false src/index.ts",
+    "start:prod": "node dist/index.js",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --fix",
+    "format": "biome format --write",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/breno-gabriel/BookTrack.git"
+  },
+  "author": "Breno Gabriel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/breno-gabriel/BookTrack/issues"
+  },
+  "homepage": "https://github.com/breno-gabriel/BookTrack#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.43.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.15.6"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.1",
+    "drizzle-kit": "^0.31.1",
+    "tsx": "^4.19.4"
+  }
+}
