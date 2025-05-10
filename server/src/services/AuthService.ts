@@ -1,10 +1,7 @@
 import bcrypt from "bcrypt";
-import { eq } from "drizzle-orm";
-import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import db from "../db";
-import { usersTable } from "../db/schema";
 import config from "../config/jwt";
+import { getUserByEmail, insertUser } from "../repositories/authReposity";
 
 async function validateUserRegister(name: string, email: string, password: string) {
 
@@ -12,10 +9,7 @@ async function validateUserRegister(name: string, email: string, password: strin
         throw {code: 400, message: "Missing required fields"};
       }
   
-      const user = await db
-        .select()
-        .from(usersTable)
-        .where(eq(usersTable.email, email));
+      const user = await getUserByEmail(email);
   
       if (user.length > 0) {
         throw {code: 400, message: "User already exists"};
@@ -23,9 +17,7 @@ async function validateUserRegister(name: string, email: string, password: strin
   
       const hashedPassword = await bcrypt.hash(password, 10);
   
-    await db
-        .insert(usersTable)
-        .values({ name, email, password: hashedPassword });
+    await insertUser(name, email, hashedPassword);
 
     return {
         code: 201,
@@ -36,10 +28,7 @@ async function validateUserRegister(name: string, email: string, password: strin
 
 async function validateUserLogin(email: string, password: string) {
 
-    const user = await db
-    .select()
-    .from(usersTable)
-    .where(eq(usersTable.email, email));
+    const user = await getUserByEmail(email);
 
   if (user.length == 0 || !(await bcrypt.compare(password, user[0].password))) {
     throw {code: 400, message: "wrong email or password"};
@@ -59,4 +48,4 @@ async function validateUserLogin(email: string, password: string) {
     
 }
 
-export { validateUserRegister, validateUserLogin };
+export { validateUserLogin, validateUserRegister };
