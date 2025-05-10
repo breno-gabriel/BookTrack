@@ -14,15 +14,17 @@ const authenticateToken = (
     return;
   }
 
-  jwt.verify(token, config.secret, (err, user) => {
-    if (err) {
-      res.status(403).json({ message: "Invalid token" });
-      console.log(err);
-      return;
-    }
-
+  try{
+    const decode = jwt.decode(token, config.secret);
+    req.user = decode;
+    console.log(req.user);
     next();
-  });
+  }catch(error){
+    console.log(error);
+    res.status(401).json({ message: "Token is invalid" });
+  }
+
+
 };
 
 export { authenticateToken };
