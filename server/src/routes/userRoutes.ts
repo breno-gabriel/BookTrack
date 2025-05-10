@@ -4,13 +4,14 @@ import db from "../db";
 import { usersTable } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { getAllUsersController, getUserByIdController, deleteUserByIdController } from "../controllers/userController";
+import { authenticateToken } from "../middlewares/authMiddleware";
 
 const userRouter = Router();
 
-userRouter.get("/", getAllUsersController);
+userRouter.get("/", authenticateToken, getAllUsersController);
 
-userRouter.get("/:id", getUserByIdController);
+userRouter.get("/:id", authenticateToken, getUserByIdController);
 
-userRouter.delete("/delete/:id", deleteUserByIdController);
+userRouter.delete("/delete/:id", authenticateToken, deleteUserByIdController);
 
 export { userRouter };
