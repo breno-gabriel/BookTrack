@@ -11,4 +11,9 @@ async function createBookRepository(
     .values({ title, author, status, avaliation, user_id: Number(user_id) });
 }
 
-export { createBookRepository };
+async function getBooksRepository(user_id: string) {
+    const books = await db.select().from(bookTable);
+    return books;
+}
+
+export { createBookRepository, getBooksRepository };

@@ -1,7 +1,7 @@
 import db from "../db";
 import { bookTable } from "../db/schema";
 import { BookStatus, createBook } from "../interfaces/book";
-import { createBookRepository } from "../repositories/bookRepository";
+import { createBookRepository, getBooksRepository } from "../repositories/bookRepository";
 
 async function createBookService(
   { title, author, status, avaliation }: createBook,
@@ -34,4 +34,8 @@ async function createBookService(
 
 }
 
-export { createBookService };
+async function getBooksService(user_id: string) {
+    return await getBooksRepository(user_id);
+}
+
+export { createBookService, getBooksService };
