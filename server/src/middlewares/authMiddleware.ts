@@ -6,13 +6,12 @@ const authenticateToken = (
   req: Request,
   res: Response,
   next: NextFunction
-
-)  : void => {
+): void => {
   const token = req.headers["authorization"] as string | undefined;
 
   if (!token) {
     res.status(401).json({ message: "Token is required" });
-    return; 
+    return;
   }
 
   jwt.verify(token, config.secret, (err, user) => {
@@ -22,7 +21,7 @@ const authenticateToken = (
       return;
     }
 
-    next(); 
+    next();
   });
 };
 
