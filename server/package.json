@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A API for a reading books tracking app. ",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsup",
     "start:dev": "tsx watch --clear-screen=false src/index.ts",
