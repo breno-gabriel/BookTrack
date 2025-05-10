@@ -1,11 +1,5 @@
-import bcrypt from "bcrypt";
-import { eq } from "drizzle-orm";
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import db from "../db";
-import { usersTable } from "../db/schema";
-import config from "../config/jwt";
-import { validateUserRegister, validateUserLogin } from "../services/AuthService";
+import { validateUserLogin, validateUserRegister } from "../services/AuthService";
 
 async function register(req: Request, res: Response) {
   try {

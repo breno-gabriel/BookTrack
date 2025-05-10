@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config/jwt";
-import { getUserByEmail, insertUser } from "../repositories/authRepository";
 import { CreateUserDTO, LoginUserDTO } from "../interfaces/user";
+import {getUserByEmail, insertUser} from "../repositories/userRepository";
 
 async function validateUserRegister({ name, email, password }: CreateUserDTO) {
 
