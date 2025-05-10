@@ -2,8 +2,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config/jwt";
 import { getUserByEmail, insertUser } from "../repositories/authReposity";
+import { CreateUserDTO, LoginUserDTO } from "../interfaces/user";
 
-async function validateUserRegister(name: string, email: string, password: string) {
+async function validateUserRegister({ name, email, password }: CreateUserDTO) {
 
     if (!name || !email || !password) {
         throw {code: 400, message: "Missing required fields"};
@@ -26,7 +27,7 @@ async function validateUserRegister(name: string, email: string, password: strin
 
 }
 
-async function validateUserLogin(email: string, password: string) {
+async function validateUserLogin({ email, password }: LoginUserDTO) {
 
     const user = await getUserByEmail(email);
 

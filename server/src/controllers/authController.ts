@@ -11,7 +11,7 @@ async function register(req: Request, res: Response) {
   try {
     const { name, email, password } = req.body;
 
-    const result = await validateUserRegister(name, email, password);
+    const result = await validateUserRegister({ name, email, password });
 
     res.status(result.code).json({ message: result.message });
     return;
@@ -26,7 +26,7 @@ async function login(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
 
-    const result = await validateUserLogin(email, password);
+    const result = await validateUserLogin({ email, password });
 
     res.status(result.code).json({ message: result.message, token: result.token });
     return;
