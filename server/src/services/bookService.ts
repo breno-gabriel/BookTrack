@@ -81,6 +81,10 @@ async function updateBookService(
     };
   }
 
+  if (status == BookStatus.LIDO) {
+    return { status: 400, message: "Não é possível atualizar um livro lido" };
+  }
+
   const result = bookSchema.safeParse({
     title,
     author,
