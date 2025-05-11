@@ -1,7 +1,10 @@
 import db from "../db";
 import { bookTable } from "../db/schema";
 import { BookStatus, createBook } from "../interfaces/book";
-import { createBookRepository, getBooksRepository } from "../repositories/bookRepository";
+import {
+  createBookRepository,
+  getBooksRepository,
+} from "../repositories/bookRepository";
 
 async function createBookService(
   { title, author, status, avaliation }: createBook,
@@ -27,15 +30,16 @@ async function createBookService(
     return { status: 400, message: "Só é possível avaliar livros lidos" };
   }
 
-  const result = await createBookRepository({ title, author, status, avaliation }, user_id);
-
+  const result = await createBookRepository(
+    { title, author, status, avaliation },
+    user_id
+  );
 
   return { status: 201, message: "Livro criado com sucesso" };
-
 }
 
-async function getBooksService(user_id: string) {
-    return await getBooksRepository(user_id);
+async function getBooksService() {
+  return await getBooksRepository();
 }
 
 export { createBookService, getBooksService };

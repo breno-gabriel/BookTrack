@@ -18,7 +18,7 @@ app.use(cors({
 
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
-app.use('/book', bookRouter)
+app.use('/books', bookRouter)
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Hello nodejs" });
