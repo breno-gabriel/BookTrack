@@ -16,14 +16,15 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const loginSchema = z.object({
+const signUpSchema = z.object({
+  name: z.string().min(3, "O nome precisa ter pelo menos 3 caracteres"),
   email: z.string().email("Email inválido"),
   password: z.string().min(8, "A senha precisa ter pelo menos 8 caracteres"),
 });
 
-type LoginForm = z.infer<typeof loginSchema>;
+type SignUpForm = z.infer<typeof signUpSchema>;
 
-export function LoginForm({
+export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -31,16 +32,16 @@ export function LoginForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignUpForm>({
+    resolver: zodResolver(signUpSchema),
   });
 
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: LoginForm) => {
+    mutationFn: async (data: SignUpForm) => {
       const response = await axios.post(
-        "http://localhost:3000/auth/login",
+        "http://localhost:3000/auth/register",
         data
       );
       return response.data;
@@ -48,13 +49,12 @@ export function LoginForm({
     onError: (error) => {
       console.log(error);
     },
-    onSuccess: (response) => {
-      localStorage.setItem("token", response.token);
+    onSuccess: () => {
       navigate("/home");
     },
   });
 
-  const onSubmit: SubmitHandler<LoginForm> = (data) => {
+  const onSubmit: SubmitHandler<SignUpForm> = (data) => {
     mutate(data);
   };
   return (
@@ -68,6 +68,18 @@ export function LoginForm({
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6">
               <div className="grid gap-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="name">Nome</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="m@example.com"
+                    {...register("name", { required: true })}
+                  />
+                </div>
+                {errors.name && (
+                  <p className="text-red-500">{errors.name.message}</p>
+                )}
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -98,13 +110,13 @@ export function LoginForm({
                   className="w-full cursor-pointer"
                   disabled={isPending}
                 >
-                  Entrar
+                  Cadastrar
                 </Button>
               </div>
               <div className="text-center text-sm">
-                Ainda não tem uma conta?{" "}
-                <a href="/signup" className="underline underline-offset-4">
-                  Cadastre-se
+                Já tem uma conta?{" "}
+                <a href="#" className="underline underline-offset-4">
+                  Faça login
                 </a>
               </div>
             </div>
