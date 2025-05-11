@@ -11,10 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 const signUpSchema = z.object({
   name: z.string().min(3, "O nome precisa ter pelo menos 3 caracteres"),
@@ -46,11 +47,12 @@ export function SignUpForm({
       );
       return response.data;
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message);
     },
     onSuccess: () => {
       navigate("/home");
+      toast.success("Cadastro realizado com sucesso");
     },
   });
 
@@ -115,7 +117,7 @@ export function SignUpForm({
               </div>
               <div className="text-center text-sm">
                 Já tem uma conta?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <a href="/login" className="underline underline-offset-4">
                   Faça login
                 </a>
               </div>

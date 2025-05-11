@@ -11,10 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -45,10 +46,11 @@ export function LoginForm({
       );
       return response.data;
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message);
     },
     onSuccess: (response) => {
+      toast.success("Login realizado com sucesso");
       localStorage.setItem("token", response.token);
       navigate("/home");
     },
