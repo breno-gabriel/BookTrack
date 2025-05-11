@@ -13,11 +13,15 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type LoginForm = {
-  email: string;
-  password: string;
-};
+const loginSchema = z.object({
+  email: z.string().email("Email inválido"),
+  password: z.string().min(8, "A senha precisa ter pelo menos 8 caracteres"),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 export function LoginForm({
   className,
@@ -27,7 +31,9 @@ export function LoginForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>();
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+  });
 
   const navigate = useNavigate();
 
@@ -47,7 +53,6 @@ export function LoginForm({
       navigate("/home");
     },
   });
-
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     mutate(data);
@@ -72,6 +77,9 @@ export function LoginForm({
                     {...register("email", { required: true })}
                   />
                 </div>
+                {errors.email && (
+                  <p className="text-red-500">{errors.email.message}</p>
+                )}
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">Senha</Label>
@@ -82,7 +90,14 @@ export function LoginForm({
                     {...register("password", { required: true })}
                   />
                 </div>
-                <Button type="submit" className="w-full cursor-pointer">
+                {errors.password && (
+                  <p className="text-red-500">{errors.password.message}</p>
+                )}
+                <Button
+                  type="submit"
+                  className="w-full cursor-pointer"
+                  disabled={isPending}
+                >
                   Entrar
                 </Button>
               </div>
