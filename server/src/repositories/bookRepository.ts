@@ -1,6 +1,6 @@
 import db from "../db";
 import { bookTable } from "../db/schema";
-import { createBook } from "../interfaces/book";
+import { book, createBook, updateBook } from "../interfaces/book";
 import { eq } from "drizzle-orm";
 
 async function createBookRepository(
@@ -18,13 +18,33 @@ async function getBooksRepository() {
 }
 
 async function getBookByIdRepository(id: string) {
-  const book = await db.select().from(bookTable).where(eq(bookTable.id, Number(id)));
-  return book;
+  const book = await db
+    .select()
+    .from(bookTable)
+    .where(eq(bookTable.id, Number(id)));
+  return book[0];
 }
 
 async function deleteBookRepository(id: string) {
-  const book = await db.delete(bookTable).where(eq(bookTable.id, Number(id)));
-  return book;
+  const result = await db.delete(bookTable).where(eq(bookTable.id, Number(id)));
+  return result;
 }
 
-export { createBookRepository, getBooksRepository, getBookByIdRepository, deleteBookRepository };
+async function updateBookRepository(
+  id: string,
+  { title, author, status, avaliation }: updateBook
+) {
+  const result = await db
+    .update(bookTable)
+    .set({ title, author, status, avaliation })
+    .where(eq(bookTable.id, Number(id)));
+  return result;
+}
+
+export {
+  createBookRepository,
+  getBooksRepository,
+  getBookByIdRepository,
+  deleteBookRepository,
+  updateBookRepository,
+};

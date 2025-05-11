@@ -10,6 +10,7 @@ import {
   deleteBookController,
   getBookByIdController,
   getBooksController,
+  updateBookController,
 } from "../controllers/bookController";
 
 const bookRouter = Router();
@@ -18,4 +19,5 @@ bookRouter.post("/create", authenticateToken, createBookController);
 bookRouter.get("/", authenticateToken, getBooksController);
 bookRouter.get("/:id", authenticateToken, getBookByIdController);
 bookRouter.delete("/delete/:id", authenticateToken, deleteBookController);
+bookRouter.put("/update/:id", authenticateToken, updateBookController);
 export { bookRouter };

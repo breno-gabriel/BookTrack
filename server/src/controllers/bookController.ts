@@ -1,8 +1,8 @@
 import db from "../db";
 import { bookTable } from "../db/schema";
-import { BookStatus, createBook } from "../interfaces/book";
+import { BookStatus, createBook, updateBook } from "../interfaces/book";
 import { Request, Response } from "express";
-import { createBookService, deleteBookService, getBookByIdService, getBooksService } from "../services/bookService";
+import { createBookService, deleteBookService, getBookByIdService, getBooksService, updateBookService } from "../services/bookService";
 
 async function createBookController(req: Request, res: Response) {
   const { title, author, status, avaliation }: createBook = req.body;
@@ -35,4 +35,14 @@ async function deleteBookController(req: Request, res: Response) {
   return;
 }
 
-export { createBookController, getBooksController, getBookByIdController, deleteBookController };
+async function updateBookController(req: Request, res: Response) {
+
+    const { title, author, status, avaliation }: updateBook = req.body;
+    const user_id = req.user.id;
+
+  const result = await updateBookService(req.params.id, { title, author, status, avaliation }, user_id);
+  res.status(result.status).json({ message: result.message });
+  return;
+}
+
+export { createBookController, getBooksController, getBookByIdController, deleteBookController, updateBookController };
