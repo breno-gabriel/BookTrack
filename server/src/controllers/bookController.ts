@@ -30,8 +30,8 @@ async function getBookByIdController(req: Request, res: Response) {
 }
 
 async function deleteBookController(req: Request, res: Response) {
-  const book = await deleteBookService(req.params.id);
-  res.json({ message: "Livro deletado", book });
+  const result = await deleteBookService(req.params.id, req.user.id);
+  res.status(result.status).json({ message: result.message });
   return;
 }
 

@@ -49,8 +49,23 @@ async function getBookByIdService(id: string) {
   return await getBookByIdRepository(id);
 }
 
-async function deleteBookService(id: string) {
-  return await deleteBookRepository(id);
+async function deleteBookService(id: string, user_id: string) {
+
+    const book = await getBookByIdRepository(id);
+    if (!book) {
+        return { status: 404, message: "Livro não encontrado" };
+    }
+
+    if (+user_id != book.user_id) {
+        return {
+            status: 401,
+            message: "Você não tem permissão para deletar este livro",
+        };
+    }
+
+  await deleteBookRepository(id);
+
+  return { status: 200, message: "Livro deletado com sucesso" };
 }
 
 async function updateBookService(
