@@ -3,6 +3,7 @@ import { bookTable } from "../db/schema";
 import { BookStatus, createBook } from "../interfaces/book";
 import {
   createBookRepository,
+  getBookByIdRepository,
   getBooksRepository,
 } from "../repositories/bookRepository";
 
@@ -42,4 +43,8 @@ async function getBooksService() {
   return await getBooksRepository();
 }
 
-export { createBookService, getBooksService };
+async function getBookByIdService(id: string) {
+  return await getBookByIdRepository(id);
+}
+
+export { createBookService, getBooksService, getBookByIdService };

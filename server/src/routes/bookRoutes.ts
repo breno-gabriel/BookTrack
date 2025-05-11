@@ -7,6 +7,7 @@ import { bookTable } from "../db/schema";
 import { eq } from "drizzle-orm";
 import {
   createBookController,
+  getBookByIdController,
   getBooksController,
 } from "../controllers/bookController";
 
@@ -14,4 +15,5 @@ const bookRouter = Router();
 
 bookRouter.post("/create", authenticateToken, createBookController);
 bookRouter.get("/", authenticateToken, getBooksController);
+bookRouter.get("/:id", authenticateToken, getBookByIdController);
 export { bookRouter };

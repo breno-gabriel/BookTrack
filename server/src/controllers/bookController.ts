@@ -2,7 +2,7 @@ import db from "../db";
 import { bookTable } from "../db/schema";
 import { BookStatus, createBook } from "../interfaces/book";
 import { Request, Response } from "express";
-import { createBookService, getBooksService } from "../services/bookService";
+import { createBookService, getBookByIdService, getBooksService } from "../services/bookService";
 
 async function createBookController(req: Request, res: Response) {
   const { title, author, status, avaliation }: createBook = req.body;
@@ -23,4 +23,10 @@ async function getBooksController(req: Request, res: Response) {
   return;
 }
 
-export { createBookController, getBooksController };
+async function getBookByIdController(req: Request, res: Response) {
+  const book = await getBookByIdService(req.params.id);
+  res.json({ message: "Livro encontrado", book });
+  return;
+}
+
+export { createBookController, getBooksController, getBookByIdController };

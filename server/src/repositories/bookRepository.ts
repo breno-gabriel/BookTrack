@@ -17,4 +17,9 @@ async function getBooksRepository() {
   return books;
 }
 
-export { createBookRepository, getBooksRepository };
+async function getBookByIdRepository(id: string) {
+  const book = await db.select().from(bookTable).where(eq(bookTable.id, Number(id)));
+  return book;
+}
+
+export { createBookRepository, getBooksRepository, getBookByIdRepository };
