@@ -12,7 +12,7 @@ async function validateUserRegister({ name, email, password }: CreateUserDTO) {
   const user = await getUserByEmail(email);
 
   if (user.length > 0) {
-    throw { code: 400, message: "User already exists" };
+    return { code: 400, message: "User already exists" };
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,7 +29,7 @@ async function validateUserLogin({ email, password }: LoginUserDTO) {
   const user = await getUserByEmail(email);
 
   if (user.length == 0 || !(await bcrypt.compare(password, user[0].password))) {
-    throw { code: 400, message: "wrong email or password" };
+    return { code: 400, message: "wrong email or password" };
   }
 
   const token = jwt.sign(
