@@ -22,4 +22,9 @@ async function getBookByIdRepository(id: string) {
   return book;
 }
 
-export { createBookRepository, getBooksRepository, getBookByIdRepository };
+async function deleteBookRepository(id: string) {
+  const book = await db.delete(bookTable).where(eq(bookTable.id, Number(id)));
+  return book;
+}
+
+export { createBookRepository, getBooksRepository, getBookByIdRepository, deleteBookRepository };
