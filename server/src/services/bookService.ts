@@ -1,5 +1,3 @@
-import db from "../db";
-import { bookTable } from "../db/schema";
 import { BookStatus, createBook, updateBook } from "../interfaces/book";
 import {
   createBookRepository,
@@ -111,9 +109,5 @@ async function updateBookService(
 }
 
 export {
-  createBookService,
-  getBooksService,
-  getBookByIdService,
-  deleteBookService,
-  updateBookService,
+  createBookService, deleteBookService, getBookByIdService, getBooksService, updateBookService
 };

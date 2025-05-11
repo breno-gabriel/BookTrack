@@ -1,7 +1,5 @@
-import db from "../db";
-import { bookTable } from "../db/schema";
-import { BookStatus, createBook, updateBook } from "../interfaces/book";
 import { Request, Response } from "express";
+import { createBook, updateBook } from "../interfaces/book";
 import { createBookService, deleteBookService, getBookByIdService, getBooksService, updateBookService } from "../services/bookService";
 
 async function createBookController(req: Request, res: Response) {
@@ -45,4 +43,5 @@ async function updateBookController(req: Request, res: Response) {
   return;
 }
 
-export { createBookController, getBooksController, getBookByIdController, deleteBookController, updateBookController };
+export { createBookController, deleteBookController, getBookByIdController, getBooksController, updateBookController };
+

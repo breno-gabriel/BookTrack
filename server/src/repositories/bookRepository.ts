@@ -1,7 +1,7 @@
+import { eq } from "drizzle-orm";
 import db from "../db";
 import { bookTable } from "../db/schema";
-import { book, createBook, updateBook } from "../interfaces/book";
-import { eq } from "drizzle-orm";
+import { createBook, updateBook } from "../interfaces/book";
 
 async function createBookRepository(
   { title, author, status, avaliation }: createBook,
@@ -42,9 +42,6 @@ async function updateBookRepository(
 }
 
 export {
-  createBookRepository,
-  getBooksRepository,
-  getBookByIdRepository,
-  deleteBookRepository,
-  updateBookRepository,
+  createBookRepository, deleteBookRepository, getBookByIdRepository, getBooksRepository, updateBookRepository
 };
+
