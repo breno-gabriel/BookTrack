@@ -5,11 +5,17 @@ import { createBook, updateBook } from "../interfaces/book";
 
 async function createBookRepository(
   { title, author, status, avaliation }: createBook,
-  user_id: string
+  user_id: string,
+  conclusion_date: string | null
 ) {
-  await db
-    .insert(bookTable)
-    .values({ title, author, status, avaliation, user_id: Number(user_id) });
+  await db.insert(bookTable).values({
+    title,
+    author,
+    status,
+    avaliation,
+    user_id: Number(user_id),
+    conclusion_date,
+  });
 }
 
 async function getBooksRepository() {
@@ -32,16 +38,20 @@ async function deleteBookRepository(id: string) {
 
 async function updateBookRepository(
   id: string,
-  { title, author, status, avaliation }: updateBook
+  { title, author, status, avaliation }: updateBook,
+  conclusion_date: string | null
 ) {
   const result = await db
     .update(bookTable)
-    .set({ title, author, status, avaliation })
+    .set({ title, author, status, avaliation, conclusion_date })
     .where(eq(bookTable.id, Number(id)));
   return result;
 }
 
 export {
-  createBookRepository, deleteBookRepository, getBookByIdRepository, getBooksRepository, updateBookRepository
+  createBookRepository,
+  deleteBookRepository,
+  getBookByIdRepository,
+  getBooksRepository,
+  updateBookRepository,
 };
-

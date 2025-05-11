@@ -1,4 +1,5 @@
 import { BookStatus, createBook, updateBook } from "../interfaces/book";
+import { bookSchema } from "../interfaces/book";
 import {
   createBookRepository,
   deleteBookRepository,
@@ -11,29 +12,27 @@ async function createBookService(
   { title, author, status, avaliation }: createBook,
   user_id: string
 ) {
-  if (!title || !status) {
-    return { status: 400, message: "Titulo e status são obrigatórios" };
+  const result = bookSchema.safeParse({
+    title,
+    author,
+    status,
+    avaliation,
+  });
+
+  if (!result.success) {
+    return { status: 400, message: result.error.format() };
   }
 
-  if (!user_id) {
-    return { status: 400, message: "User ID é obrigatório" };
+  let conclusion_date: string | null = null;
+
+  if (status == BookStatus.LIDO) {
+    conclusion_date = new Date().toISOString();
   }
 
-  if (
-    status != BookStatus.QUERO_LER &&
-    status != BookStatus.LENDO &&
-    status != BookStatus.LIDO
-  ) {
-    return { status: 400, message: "Status inválido" };
-  }
-
-  if (status != BookStatus.LIDO && avaliation) {
-    return { status: 400, message: "Só é possível avaliar livros lidos" };
-  }
-
-  const result = await createBookRepository(
-    { title, author, status, avaliation },
-    user_id
+  const book = await createBookRepository(
+    result.data,
+    user_id,
+    conclusion_date
   );
 
   return { status: 201, message: "Livro criado com sucesso" };
@@ -48,18 +47,17 @@ async function getBookByIdService(id: string) {
 }
 
 async function deleteBookService(id: string, user_id: string) {
+  const book = await getBookByIdRepository(id);
+  if (!book) {
+    return { status: 404, message: "Livro não encontrado" };
+  }
 
-    const book = await getBookByIdRepository(id);
-    if (!book) {
-        return { status: 404, message: "Livro não encontrado" };
-    }
-
-    if (+user_id != book.user_id) {
-        return {
-            status: 401,
-            message: "Você não tem permissão para deletar este livro",
-        };
-    }
+  if (+user_id != book.user_id) {
+    return {
+      status: 401,
+      message: "Você não tem permissão para deletar este livro",
+    };
+  }
 
   await deleteBookRepository(id);
 
@@ -76,10 +74,6 @@ async function updateBookService(
     return { status: 404, message: "Livro não encontrado" };
   }
 
-  if (book.status == BookStatus.LIDO) {
-    return { status: 400, message: "Não é possível atualizar um livro lido" };
-  }
-
   if (+user_id != book.user_id) {
     return {
       status: 401,
@@ -87,27 +81,32 @@ async function updateBookService(
     };
   }
 
-  if (!title || !status) {
-    return { status: 400, message: "Titulo e status são obrigatórios" };
+  const result = bookSchema.safeParse({
+    title,
+    author,
+    status,
+    avaliation,
+  });
+
+  if (!result.success) {
+    return { status: 400, message: result.error.format() };
   }
 
-  if (
-    status != BookStatus.QUERO_LER &&
-    status != BookStatus.LENDO &&
-    status != BookStatus.LIDO
-  ) {
-    return { status: 400, message: "Status inválido" };
+  let conclusion_date: string | null = null;
+
+  if (status == BookStatus.LIDO) {
+    conclusion_date = new Date().toISOString();
   }
 
-  if (status != BookStatus.LIDO && avaliation) {
-    return { status: 400, message: "Só é possível avaliar livros lidos" };
-  }
-
-  await updateBookRepository(id, { title, author, status, avaliation });
+  await updateBookRepository(id, result.data, conclusion_date);
 
   return { status: 200, message: "Livro atualizado com sucesso" };
 }
 
 export {
-  createBookService, deleteBookService, getBookByIdService, getBooksService, updateBookService
+  createBookService,
+  deleteBookService,
+  getBookByIdService,
+  getBooksService,
+  updateBookService,
 };

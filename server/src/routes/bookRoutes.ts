@@ -16,4 +16,3 @@ bookRouter.get("/:id", authenticateToken, getBookByIdController);
 bookRouter.delete("/delete/:id", authenticateToken, deleteBookController);
 bookRouter.put("/update/:id", authenticateToken, updateBookController);
 export { bookRouter };
-
