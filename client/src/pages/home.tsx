@@ -1,4 +1,5 @@
 import AddBookDialog from "@/components/add-book-dialog";
+import BookCard from "@/components/book-card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -23,6 +24,11 @@ export default function Home() {
         </Button>
         <AddBookDialog open={open} onOpenChange={setOpen}/>
       </div>
+
+      <div className="flex flex-wrap gap-4">
+        <BookCard title="Dom Casmurro" author="Machado de Assis" status="Lido" rating="5"/>
+      </div>
+
     </div>
   );
 }
