@@ -56,17 +56,20 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
   const { mutate } = useMutation({
     mutationFn: async (data: Book) => {
       const token = localStorage.getItem("token");
-  
+
       const response = await axios.post(
         "http://localhost:3000/books/create",
-        data,
+        {
+          ...data,
+          rating: data.rating ? Number(data.rating) : null,
+        },
         {
           headers: {
             Authorization: token,
           },
         }
       );
-  
+
       return response.data;
     },
     onSuccess: () => {
@@ -79,6 +82,7 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
 
   const onSubmit = (data: Book) => {
     onSave();
+    console.log(data);
     mutate(data);
   };
 

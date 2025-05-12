@@ -11,7 +11,7 @@ interface Book {
   title: string;
   author: string;
   status: string;
-  rating: string;
+  rating: number;
 }
 
 export default function Home() {
@@ -22,10 +22,10 @@ export default function Home() {
     queryFn: async () => {
       const response = await axios.get("http://localhost:3000/books", {
         headers: {
-          Authorization: localStorage.getItem("token")
-        }
+          Authorization: localStorage.getItem("token"),
+        },
       });
-      return response.data['books'];
+      return response.data["books"];
     },
   });
 
@@ -45,7 +45,7 @@ export default function Home() {
         </Button>
         <AddBookDialog open={open} onOpenChange={setOpen} />
       </div>
-      
+
       <div className="flex flex-wrap gap-4">
         {isPending ? (
           <p>Carregando livros...</p>

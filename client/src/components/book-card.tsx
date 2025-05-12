@@ -12,15 +12,10 @@ interface BookProps {
   title: string;
   author: string;
   status: string;
-  rating: string;
+  rating: number;
 }
 
-export default function BookCard({
-  title = "Dom Casmurro",
-  author = "Machado de Assis",
-  status = "Lido",
-  rating = "5",
-}: BookProps) {
+export default function BookCard({ title, author, status, rating }: BookProps) {
   return (
     <Card className="w-[320px] rounded-2xl shadow-lg border border-gray-200 bg-white transition hover:shadow-xl">
       <CardHeader className="pb-2">
@@ -36,12 +31,11 @@ export default function BookCard({
           <span className="font-medium text-gray-700">Status:</span>
           <span className="capitalize">{status}</span>
         </div>
-        {status === "Lido" && (
-          <div className="flex items-center justify-between">
-            <span className="font-medium text-gray-700">Avaliação:</span>
-            <span>{"⭐".repeat(Number(rating)) || "—"}</span>
-          </div>
-        )}
+
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-gray-700">Avaliação:</span>
+          <span>{"⭐".repeat(Number(rating)) || "—"}</span>
+        </div>      
       </CardContent>
       <CardFooter className="flex justify-between mt-4">
         <Button variant="outline" className="rounded-full px-4">
