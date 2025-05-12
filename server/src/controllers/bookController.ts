@@ -9,11 +9,12 @@ import {
 } from "../services/bookService";
 
 async function createBookController(req: Request, res: Response) {
-  const { title, author, status, avaliation }: createBook = req.body;
+  const { title, author, status, rating }: createBook = req.body;
+  console.log(req.body);
   const user_id = req.user.id;
 
   const result = await createBookService(
-    { title, author, status, avaliation },
+    { title, author, status, rating },
     user_id
   );
 
@@ -40,7 +41,7 @@ async function deleteBookController(req: Request, res: Response) {
 }
 
 async function updateBookController(req: Request, res: Response) {
-  const { title, author, status, avaliation }: updateBook = req.body;
+  const { title, author, status, rating }: updateBook = req.body;
   const user_id = req.user.id;
   const result = await updateBookService(
     req.params.id,
@@ -48,7 +49,7 @@ async function updateBookController(req: Request, res: Response) {
       title,
       author,
       status,
-      avaliation,
+      rating,
     },
     user_id
   );

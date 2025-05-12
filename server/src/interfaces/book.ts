@@ -13,7 +13,7 @@ export const bookSchema = z
 
     status: StatusEnum,
 
-    avaliation: z
+    rating: z
       .number()
       .int()
       .min(1, "Avaliação deve ser no mínimo 1")
@@ -23,11 +23,11 @@ export const bookSchema = z
   })
   .superRefine((data, ctx) => {
     const isRead = data.status === "Lido";
-    const hasAvaliation = data.avaliation !== undefined;
+    const hasRating = data.rating !== undefined;
 
-    if (hasAvaliation && !isRead) {
+    if (hasRating && !isRead) {
       ctx.addIssue({
-        path: ["avaliation"],
+        path: ["rating"],
         message: "Só é possível avaliar livros com status 'Lido'",
         code: z.ZodIssueCode.custom,
       });
@@ -40,7 +40,7 @@ export interface book {
   title: string;
   author: string;
   status: string;
-  avaliation: number | null;
+  rating: number | null;
   conclusion_date: string | null;
 }
 
@@ -48,14 +48,14 @@ export interface createBook {
   title: string;
   author?: string;
   status: string;
-  avaliation?: number | null;
+  rating?: number | null;
 }
 
 export interface updateBook {
   title?: string;
   author?: string;
   status?: string;
-  avaliation?: number | null;
+  rating?: number | null;
 }
 
 export enum BookStatus {

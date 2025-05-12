@@ -9,14 +9,14 @@ import {
 } from "../repositories/bookRepository";
 
 async function createBookService(
-  { title, author, status, avaliation }: createBook,
+  { title, author, status, rating }: createBook,
   user_id: string
 ) {
   const result = bookSchema.safeParse({
     title,
     author,
     status,
-    avaliation,
+    rating,
   });
 
   if (!result.success) {
@@ -28,6 +28,8 @@ async function createBookService(
   if (status == BookStatus.LIDO) {
     conclusion_date = new Date().toISOString();
   }
+
+  console.log(result.data);
 
   const book = await createBookRepository(
     result.data,
@@ -66,7 +68,7 @@ async function deleteBookService(id: string, user_id: string) {
 
 async function updateBookService(
   id: string,
-  { title, author, status, avaliation }: updateBook,
+  { title, author, status, rating }: updateBook,
   user_id: string
 ) {
   const book = await getBookByIdService(id);
@@ -85,11 +87,12 @@ async function updateBookService(
     return { status: 400, message: "Não é possível atualizar um livro lido" };
   }
 
+
   const result = bookSchema.safeParse({
     title,
     author,
     status,
-    avaliation,
+    rating,
   });
 
   if (!result.success) {

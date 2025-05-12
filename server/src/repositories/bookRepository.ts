@@ -4,18 +4,20 @@ import { bookTable } from "../db/schema";
 import { createBook, updateBook } from "../interfaces/book";
 
 async function createBookRepository(
-  { title, author, status, avaliation }: createBook,
+  { title, author, status, rating }: createBook,
   user_id: string,
   conclusion_date: string | null
 ) {
-  await db.insert(bookTable).values({
-    title,
-    author,
-    status,
-    avaliation,
-    user_id: Number(user_id),
-    conclusion_date,
-  });
+  await db
+    .insert(bookTable)
+    .values({
+      title,
+      author,
+      status,
+      rating,
+      user_id: Number(user_id),
+      conclusion_date,
+    });
 }
 
 async function getBooksRepository() {
@@ -38,12 +40,12 @@ async function deleteBookRepository(id: string) {
 
 async function updateBookRepository(
   id: string,
-  { title, author, status, avaliation }: updateBook,
+  { title, author, status, rating }: updateBook,
   conclusion_date: string | null
 ) {
   const result = await db
     .update(bookTable)
-    .set({ title, author, status, avaliation, conclusion_date })
+    .set({ title, author, status, rating, conclusion_date })
     .where(eq(bookTable.id, Number(id)));
   return result;
 }
