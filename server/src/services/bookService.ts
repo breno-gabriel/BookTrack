@@ -4,9 +4,11 @@ import {
   createBookRepository,
   deleteBookRepository,
   getBookByIdRepository,
+  getBooksByUserIdRepository,
   getBooksRepository,
   updateBookRepository,
 } from "../repositories/bookRepository";
+import { getUserByIdService } from "./userService";
 
 async function createBookService(
   { title, author, status, avaliation }: createBook,
@@ -107,10 +109,17 @@ async function updateBookService(
   return { status: 200, message: "Livro atualizado com sucesso" };
 }
 
+async function getBooksByUserIdService(user_id: string) {
+
+  const books = await getBooksByUserIdRepository(user_id);
+  return books;
+}
+
 export {
   createBookService,
   deleteBookService,
   getBookByIdService,
   getBooksService,
   updateBookService,
+  getBooksByUserIdService,
 };
