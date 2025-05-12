@@ -18,7 +18,6 @@ interface Book {
 export default function Home() {
   const [open, setOpen] = useState(false);
 
-
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode<{ id: number }>(token) : null;
   const userId = decoded?.id;
