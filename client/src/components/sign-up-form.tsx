@@ -51,7 +51,7 @@ export function SignUpForm({
       toast.error(error.response?.data.message);
     },
     onSuccess: () => {
-      navigate("/home");
+      navigate("/login");
       toast.success("Cadastro realizado com sucesso");
     },
   });

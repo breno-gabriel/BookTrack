@@ -52,7 +52,7 @@ export function LoginForm({
     onSuccess: (response) => {
       toast.success("Login realizado com sucesso");
       localStorage.setItem("token", response.token);
-      navigate("/home");
+      navigate("/");
     },
   });
 
