@@ -1,12 +1,7 @@
-import { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 const BookSchema = z.object({
   title: z
@@ -51,9 +53,33 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
     },
   });
 
+  const { mutate } = useMutation({
+    mutationFn: async (data: Book) => {
+      const token = localStorage.getItem("token");
+  
+      const response = await axios.post(
+        "http://localhost:3000/books/create",
+        data,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+  
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Livro adicionado com sucesso!");
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message);
+    },
+  });
+
   const onSubmit = (data: Book) => {
     onSave();
-    console.log(data);
+    mutate(data);
   };
 
   return (
@@ -96,7 +122,10 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
                   <Select
                     {...field}
                     value={field.value}
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setNewBook({ ...newBook, status: value });
+                    }}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione uma categoria" />
@@ -112,34 +141,36 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="rating"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Rating</FormLabel>
-                <FormControl>
-                  <Select
-                    {...field}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione uma nota" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5">5</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {newBook.status == "Lido" && (
+            <FormField
+              control={form.control}
+              name="rating"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rating</FormLabel>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma nota" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
         <Button className="w-full">Salvar</Button>
       </form>
