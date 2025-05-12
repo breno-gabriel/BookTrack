@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const BookSchema = z.object({
   title: z
@@ -53,6 +53,8 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
     },
   });
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: async (data: Book) => {
       const token = localStorage.getItem("token");
@@ -61,7 +63,7 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
         "http://localhost:3000/books/create",
         {
           ...data,
-          rating: data.rating ? Number(data.rating) : null,
+          rating: data.rating ? Number(data.rating) : undefined,
         },
         {
           headers: {
@@ -73,6 +75,7 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
       return response.data;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
       toast.success("Livro adicionado com sucesso!");
     },
     onError: (error: AxiosError<{ message: string }>) => {
@@ -82,7 +85,6 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
 
   const onSubmit = (data: Book) => {
     onSave();
-    console.log(data);
     mutate(data);
   };
 

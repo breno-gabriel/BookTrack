@@ -10,6 +10,7 @@ import {
 } from "../services/bookService";
 
 async function createBookController(req: Request, res: Response) {
+
   const { title, author, status, rating }: createBook = req.body;
   console.log(req.body);
   const user_id = req.user.id;

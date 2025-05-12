@@ -5,6 +5,7 @@ import axios from "axios";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import {jwtDecode} from "jwt-decode";
 
 interface Book {
   id: string;
@@ -17,18 +18,24 @@ interface Book {
 export default function Home() {
   const [open, setOpen] = useState(false);
 
+
+  const token = localStorage.getItem("token");
+  const decoded = token ? jwtDecode<{ id: number }>(token) : null;
+  const userId = decoded?.id;
+
   const { data, isPending } = useQuery({
     queryKey: ["books"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:3000/books", {
+      const response = await axios.get(`http://localhost:3000/books/user/${userId}`, {
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: token,
         },
       });
+      console.log(response.data);
       return response.data["books"];
     },
   });
-
+  console.log(data);
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-8 mt-15 text-center">
