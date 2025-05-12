@@ -4,6 +4,7 @@ import {
   createBookService,
   deleteBookService,
   getBookByIdService,
+  getBooksByUserIdService,
   getBooksService,
   updateBookService,
 } from "../services/bookService";
@@ -56,10 +57,17 @@ async function updateBookController(req: Request, res: Response) {
   return;
 }
 
+async function getBooksByUserIdController(req: Request, res: Response) {
+  const books = await getBooksByUserIdService(req.params.id);
+  res.json({ message: "Livros encontrados", books });
+  return;
+}
+
 export {
   createBookController,
   deleteBookController,
   getBookByIdController,
   getBooksController,
   updateBookController,
+  getBooksByUserIdController,
 };
