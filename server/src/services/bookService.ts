@@ -7,6 +7,7 @@ import {
   getBooksRepository,
   updateBookRepository,
 } from "../repositories/bookRepository";
+import { getUserById } from "../repositories/userRepository";
 
 async function createBookService(
   { title, author, status, rating }: createBook,
@@ -110,10 +111,21 @@ async function updateBookService(
   return { status: 200, message: "Livro atualizado com sucesso" };
 }
 
+async function getBooksByUserIdService(user_id: number) {
+  const user = await getUserById(user_id);
+  if (!user) {
+    return { status: 404, message: "Usuário não encontrado" };
+  }
+  const books = await getBooksRepository();
+  const userBooks = books.filter((book) => book.user_id == user_id);
+  return userBooks;
+}
+
 export {
   createBookService,
   deleteBookService,
   getBookByIdService,
   getBooksService,
   updateBookService,
+  getBooksByUserIdService,
 };
