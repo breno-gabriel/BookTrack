@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/loginPage.tsx";
 import SignUpPage from "./pages/signUp.tsx";
 import Home from "./pages/home.tsx";
+import ProtectedRoute from "./components/protect-route.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 
@@ -17,7 +18,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home />,
+    element: <ProtectedRoute children={<Home />} />,  
+    children: [
+      {
+        path: "", 
+        element: <Home />
+      }
+    ]
   },
   {
     path: "/signup",
