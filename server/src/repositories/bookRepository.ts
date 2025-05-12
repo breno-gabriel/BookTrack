@@ -48,19 +48,10 @@ async function updateBookRepository(
   return result;
 }
 
-async function getBooksByUserIdRepository(user_id: string) {
-  const books = await db
-    .select()
-    .from(bookTable)
-    .where(eq(bookTable.user_id, Number(user_id)));
-  return books;
-}
-
 export {
   createBookRepository,
   deleteBookRepository,
   getBookByIdRepository,
   getBooksRepository,
   updateBookRepository,
-  getBooksByUserIdRepository,
 };
