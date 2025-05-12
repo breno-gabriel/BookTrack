@@ -18,6 +18,7 @@ interface Book {
 export default function Home() {
   const [open, setOpen] = useState(false);
 
+
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode<{ id: number }>(token) : null;
   const userId = decoded?.id;
@@ -52,7 +53,7 @@ export default function Home() {
         <AddBookDialog open={open} onOpenChange={setOpen} />
       </div>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {isPending ? (
           <p>Carregando livros...</p>
         ) : (
