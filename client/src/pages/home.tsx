@@ -6,9 +6,8 @@ import { Book } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { Plus } from "lucide-react";
+import { Plus, Pencil, LogOut } from "lucide-react";
 import { useState } from "react";
-
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -19,7 +18,7 @@ export default function Home() {
     author: "",
     status: "",
     rating: "",
-    });
+  });
 
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode<{ id: number }>(token) : null;
@@ -50,13 +49,27 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="flex justify-end mb-12">
+      <div className="flex justify-between mb-12">
+        <Button
+          className="p-6 cursor-pointer"
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }}
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Sair
+        </Button>
         <Button className="p-6 cursor-pointer" onClick={() => setOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Adicionar livro
         </Button>
         <AddBookDialog open={open} onOpenChange={setOpen} />
-        <UpdateBookDialog open={updateOpen} onOpenChange={setUpdateOpen} book={currentBook} />
+        <UpdateBookDialog
+          open={updateOpen}
+          onOpenChange={setUpdateOpen}
+          book={currentBook}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
