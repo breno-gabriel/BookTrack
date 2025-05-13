@@ -13,6 +13,6 @@ export const bookTable = pgTable("books", {
   title: varchar({ length: 255 }).notNull(),
   author: varchar({ length: 255 }),
   status: varchar({ length: 255 }).notNull(),
-  avaliation: integer(),
+  rating: integer(),
   conclusion_date: varchar({ length: 255 }),
 });
