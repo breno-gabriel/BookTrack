@@ -84,11 +84,19 @@ export default function BookCard({
         </div>
       </CardContent>
       <CardFooter className="flex justify-between mt-4">
-        <Button variant="outline" className="px-4" onClick={() => mutate(id)}>
+        <Button
+          variant="outline"
+          className="px-4 cursor-pointer"
+          onClick={() => mutate(id)}
+        >
           <Trash className="mr-2 h-4 w-4" />
           Deletar
         </Button>
-        <Button variant="default" className="px-4">
+        <Button
+          variant="default"
+          className="px-4 cursor-pointer"
+          disabled={status == "Lido"}
+        >
           <Pencil className="mr-2 h-4 w-4" />
           Editar
         </Button>

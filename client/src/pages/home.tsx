@@ -25,11 +25,14 @@ export default function Home() {
   const { data, isPending } = useQuery({
     queryKey: ["books"],
     queryFn: async () => {
-      const response = await axios.get(`http://localhost:3000/books/user/${userId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axios.get(
+        `http://localhost:3000/books/user/${userId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       console.log(response.data);
       return response.data["books"];
     },
