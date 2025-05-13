@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {jwtDecode} from "jwt-decode";
 
 interface Book {
-  id: string;
+  id: number;
   title: string;
   author: string;
   status: string;
@@ -18,6 +18,7 @@ interface Book {
 export default function Home() {
   const [open, setOpen] = useState(false);
 
+  const queryClient = useQueryClient();
 
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode<{ id: number }>(token) : null;
@@ -53,13 +54,14 @@ export default function Home() {
         <AddBookDialog open={open} onOpenChange={setOpen} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {isPending ? (
           <p>Carregando livros...</p>
         ) : (
           data?.map((book: Book) => (
             <BookCard
               key={book.id}
+              id={book.id}
               title={book.title}
               author={book.author}
               status={book.status}
