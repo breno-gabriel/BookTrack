@@ -36,13 +36,6 @@ const BookSchema = z.object({
 interface Book extends z.infer<typeof BookSchema> {}
 
 export default function BookForm({ onSave }: { onSave: () => void }) {
-  const [newBook, setNewBook] = useState<Omit<Book, "id">>({
-    title: "",
-    author: "",
-    status: "",
-    rating: "",
-  });
-
   const form = useForm<Book>({
     resolver: zodResolver(BookSchema),
     defaultValues: {
@@ -52,6 +45,8 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
       rating: "",
     },
   });
+
+  const status = form.watch("status");
 
   const queryClient = useQueryClient();
 
@@ -126,12 +121,9 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
                 <FormLabel>Status</FormLabel>
                 <FormControl>
                   <Select
-                    {...field}
+                    onValueChange={field.onChange}
                     value={field.value}
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      setNewBook({ ...newBook, status: value });
-                    }}
+                    defaultValue={field.value}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione uma categoria" />
@@ -147,7 +139,7 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
               </FormItem>
             )}
           />
-          {newBook.status == "Lido" && (
+          {status == "Lido" && (
             <FormField
               control={form.control}
               name="rating"
@@ -156,9 +148,9 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
                   <FormLabel>Rating</FormLabel>
                   <FormControl>
                     <Select
-                      {...field}
-                      value={field.value}
                       onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma nota" />
@@ -180,7 +172,11 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
         </div>
         <Button className="w-full cursor-pointer">Salvar</Button>
       </form>
-      <Button variant="outline" className="cursor-pointer" onClick={() => onSave()}>
+      <Button
+        variant="outline"
+        className="cursor-pointer"
+        onClick={() => onSave()}
+      >
         Cancelar
       </Button>
     </Form>

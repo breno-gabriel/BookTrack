@@ -21,10 +21,9 @@ import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useEffect } from "react";
 
 const BookSchema = z.object({
-  id: z.number().optional(), // id não é usado no form diretamente
+  id: z.number().optional(), 
   title: z
     .string()
     .min(3, "O nome precisa ter pelo menos 3 caracteres")
@@ -88,7 +87,6 @@ export default function UpdateBookForm({
     mutate(data);
   };
 
-  // Watch para exibir rating quando status for "Lido"
   const status = form.watch("status");
 
   return (
