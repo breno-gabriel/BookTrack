@@ -1,10 +1,7 @@
-import db from "../db";
-import { usersTable } from "../db/schema";
-import { eq } from "drizzle-orm";
 import {
+  deleteUserById,
   getAllUsers,
   getUserById,
-  deleteUserById,
 } from "../repositories/userRepository";
 
 function getAllUsersService() {
@@ -19,4 +16,4 @@ function deleteUserByIdService(id: number) {
   return deleteUserById(id);
 }
 
-export { getAllUsersService, getUserByIdService, deleteUserByIdService };
+export { deleteUserByIdService, getAllUsersService, getUserByIdService };

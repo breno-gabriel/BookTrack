@@ -88,7 +88,6 @@ async function updateBookService(
     return { status: 400, message: "Não é possível atualizar um livro lido" };
   }
 
-
   const result = bookSchema.safeParse({
     title,
     author,
@@ -127,7 +126,7 @@ async function exportBooksService(user_id: number) {
     return { status: 404, message: "Usuário não encontrado" };
   }
   const books = await getBooksByUserIdService(user_id);
-  const fields = ['title', 'author', 'status', 'rating', 'conclusion_date'];
+  const fields = ["title", "author", "status", "rating", "conclusion_date"];
   const json2csv = new Parser({ fields, header: true });
   const csv = json2csv.parse(books);
   return csv;

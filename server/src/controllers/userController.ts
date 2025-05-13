@@ -1,9 +1,9 @@
+import { Request, Response } from "express";
 import {
+  deleteUserByIdService,
   getAllUsersService,
   getUserByIdService,
-  deleteUserByIdService,
 } from "../services/userService";
-import { Request, Response } from "express";
 
 async function getAllUsersController(req: Request, res: Response) {
   try {
@@ -36,7 +36,7 @@ async function deleteUserByIdController(req: Request, res: Response) {
 }
 
 export {
+  deleteUserByIdController,
   getAllUsersController,
   getUserByIdController,
-  deleteUserByIdController,
 };

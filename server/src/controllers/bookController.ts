@@ -9,7 +9,6 @@ import {
   getBooksService,
   updateBookService,
 } from "../services/bookService";
-import { getUserByIdService } from "../services/userService";
 
 async function createBookController(req: Request, res: Response) {
   try {
@@ -99,8 +98,8 @@ async function getBooksByUserIdController(req: Request, res: Response) {
 async function exportBooksController(req: Request, res: Response) {
   try {
     const booksCsv = await exportBooksService(req.params.id);
-    res.header('Content-Type', 'text/csv');
-    res.attachment('meus_livros.csv'); 
+    res.header("Content-Type", "text/csv");
+    res.attachment("meus_livros.csv");
     res.send(booksCsv);
     return;
   } catch (error) {
@@ -111,10 +110,9 @@ async function exportBooksController(req: Request, res: Response) {
 
 export {
   createBookController,
-  deleteBookController,
-  getBookByIdController,
+  deleteBookController, exportBooksController, getBookByIdController,
   getBooksByUserIdController,
   getBooksController,
-  updateBookController,
-  exportBooksController,
+  updateBookController
 };
+

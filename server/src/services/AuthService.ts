@@ -1,14 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config/jwt";
+import { CreateUserDTO, createUserSchema, LoginUserDTO, loginUserSchema } from "../dto/user";
 import { getUserByEmail, insertUser } from "../repositories/userRepository";
-import z from "zod";
-import { createUserSchema, loginUserSchema } from "../dto/user";
-import { CreateUserDTO, LoginUserDTO } from "../dto/user";
-
 
 async function validateUserRegister({ name, email, password }: CreateUserDTO) {
-
   const result = createUserSchema.safeParse({ name, email, password });
 
   if (!result.success) {
@@ -54,3 +50,4 @@ async function validateUserLogin({ email, password }: LoginUserDTO) {
 }
 
 export { validateUserLogin, validateUserRegister };
+

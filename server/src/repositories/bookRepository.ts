@@ -8,16 +8,14 @@ async function createBookRepository(
   user_id: string,
   conclusion_date: string | null
 ) {
-  await db
-    .insert(bookTable)
-    .values({
-      title,
-      author,
-      status,
-      rating,
-      user_id: Number(user_id),
-      conclusion_date,
-    });
+  await db.insert(bookTable).values({
+    title,
+    author,
+    status,
+    rating,
+    user_id: Number(user_id),
+    conclusion_date,
+  });
 }
 
 async function getBooksRepository() {
@@ -49,7 +47,6 @@ async function updateBookRepository(
     .where(eq(bookTable.id, Number(id)));
   return result;
 }
-
 
 export {
   createBookRepository,
