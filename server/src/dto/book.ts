@@ -23,9 +23,9 @@ export const bookSchema = z
   })
   .superRefine((data, ctx) => {
     const isRead = data.status === "Lido";
-    const hasRating = data.rating !== null;
+    const hasRating = data.rating !== null && data.rating !== undefined;
 
-    if (hasRating && !isRead) {
+    if (hasRating && !isRead) { 
       ctx.addIssue({
         path: ["rating"],
         message: "Só é possível avaliar livros com status 'Lido'",
