@@ -1,22 +1,25 @@
 import AddBookDialog from "@/components/add-book-dialog";
 import BookCard from "@/components/book-card";
 import { Button } from "@/components/ui/button";
+import UpdateBookDialog from "@/components/update-book-dialog";
+import { Book } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  status: string;
-  rating: number;
-}
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [currentBook, setCurrentBook] = useState<Book>({
+    id: 0,
+    title: "",
+    author: "",
+    status: "",
+    rating: "",
+    });
 
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode<{ id: number }>(token) : null;
@@ -53,6 +56,7 @@ export default function Home() {
           Adicionar livro
         </Button>
         <AddBookDialog open={open} onOpenChange={setOpen} />
+        <UpdateBookDialog open={updateOpen} onOpenChange={setUpdateOpen} book={currentBook} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -62,11 +66,9 @@ export default function Home() {
           data?.map((book: Book) => (
             <BookCard
               key={book.id}
-              id={book.id}
-              title={book.title}
-              author={book.author}
-              status={book.status}
-              rating={book.rating}
+              book={book}
+              setCurrentBook={setCurrentBook}
+              setUpdateOpen={setUpdateOpen}
             />
           ))
         )}

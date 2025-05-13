@@ -12,22 +12,15 @@ import { Pencil, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Book } from "../utils/utils";
 
 interface BookProps {
-  id: number;
-  title: string;
-  author: string;
-  status: string;
-  rating: number;
+  book: Book;
+  setCurrentBook: (book: Book) => void;
+  setUpdateOpen: (open: boolean) => void;
 }
 
-export default function BookCard({
-  id,
-  title,
-  author,
-  status,
-  rating,
-}: BookProps) {
+export default function BookCard({ book, setCurrentBook, setUpdateOpen }: BookProps) {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -57,9 +50,9 @@ export default function BookCard({
   return (
     <Card className="w-full rounded-2xl shadow-lg border border-gray-200 bg-white transition hover:shadow-xl">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-semibold">{title}</CardTitle>
+        <CardTitle className="text-xl font-semibold">{book.title}</CardTitle>
         <CardDescription className="text-sm text-gray-500">
-          {author || "Autor desconhecido"}
+          {book.author || "Autor desconhecido"}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2 text-sm text-gray-600">
@@ -67,33 +60,41 @@ export default function BookCard({
           <span className="font-medium text-gray-700">Status:</span>
           <Badge
             variant={
-              status === "Lendo"
+              book.status === "Lendo"
                 ? "yellow"
-                : status === "Lido"
+                : book.status === "Lido"
                 ? "green"
                 : "brown"
             }
           >
-            {status}
+            {book.status}
           </Badge>
         </div>
 
         <div className="flex items-center justify-between">
           <span className="font-medium text-gray-700">Avaliação:</span>
-          <span>{"⭐".repeat(Number(rating)) || "—"}</span>
+          <span>{"⭐".repeat(Number(book.rating)) || "—"}</span>
         </div>
       </CardContent>
       <CardFooter className="flex justify-between mt-4">
         <Button
           variant="outline"
           className="px-4 cursor-pointer"
-          onClick={() => mutate(id)}
+          onClick={() => mutate(book.id)}
         >
           <Trash className="mr-2 h-4 w-4" />
           Deletar
         </Button>
 
-        <Button variant="default" className="px-4 cursor-pointer" disabled={status === "Lido"}>
+        <Button
+          variant="default"
+          className="px-4 cursor-pointer"
+          disabled={book.status === "Lido"}
+          onClick={() => {
+            setCurrentBook(book);
+            setUpdateOpen(true);
+          }}
+        >
           <Pencil className="mr-2 h-4 w-4" />
           Editar
         </Button>
