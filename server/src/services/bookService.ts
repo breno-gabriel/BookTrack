@@ -1,5 +1,4 @@
-import { BookStatus, createBook, updateBook } from "../interfaces/book";
-import { bookSchema } from "../interfaces/book";
+import { bookSchema, createBook, updateBook, BookStatus } from "../dto/book";
 import {
   createBookRepository,
   deleteBookRepository,

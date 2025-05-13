@@ -23,7 +23,7 @@ export const bookSchema = z
   })
   .superRefine((data, ctx) => {
     const isRead = data.status === "Lido";
-    const hasRating = data.rating !== undefined;
+    const hasRating = data.rating !== null;
 
     if (hasRating && !isRead) {
       ctx.addIssue({

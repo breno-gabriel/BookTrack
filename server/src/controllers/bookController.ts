@@ -66,6 +66,7 @@ async function updateBookController(req: Request, res: Response) {
   try {
     const { title, author, status, rating }: updateBook = req.body;
     const user_id = req.user.id;
+    console.log(user_id);
     const result = await updateBookService(
       req.params.id,
       {

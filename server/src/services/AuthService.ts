@@ -3,20 +3,9 @@ import jwt from "jsonwebtoken";
 import config from "../config/jwt";
 import { getUserByEmail, insertUser } from "../repositories/userRepository";
 import z from "zod";
+import { createUserSchema, loginUserSchema } from "../dto/user";
+import { CreateUserDTO, LoginUserDTO } from "../dto/user";
 
-const createUserSchema = z.object({
-  name: z.string().min(3, "Name must have at least 3 characters"),
-  email: z.string().email("Digite um email válido"),
-  password: z.string().min(8, "Password must have at least 8 characters"),
-});
-
-const loginUserSchema = z.object({
-  email: z.string().email("Digite um email válido"),
-  password: z.string().min(8, "Password must have at least 8 characters"),
-});
-
-type CreateUserDTO = z.infer<typeof createUserSchema>;
-type LoginUserDTO = z.infer<typeof loginUserSchema>;
 
 async function validateUserRegister({ name, email, password }: CreateUserDTO) {
 
