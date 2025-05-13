@@ -18,36 +18,33 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Book } from "../utils/utils";
+import { useEffect } from "react";
 
-const UpdateBookSchema = z.object({
-  id: z.number(),
+const BookSchema = z.object({
+  id: z.number().optional(), // id não é usado no form diretamente
   title: z
     .string()
     .min(3, "O nome precisa ter pelo menos 3 caracteres")
     .max(100, "O nome precisa ter menos de 100 caracteres"),
   author: z.string().optional(),
-  status: z.string().min(1, "Selecione uma categoria").optional(),
+  status: z.string().min(1, "Selecione uma categoria"),
   rating: z.string().optional(),
 });
 
-interface UpdateBook extends z.infer<typeof UpdateBookSchema> {}
+type Book = z.infer<typeof BookSchema>;
 
-export default function UpdateBookForm({ onSave, book }: { onSave: () => void, book: Book }) {
-  const [newBook, setNewBook] = useState<UpdateBook>({
-    id: book.id,
-    title: book.title,
-    author: book.author,
-    status: book.status,
-    rating: book.rating,
-  });
-
-  const form = useForm<UpdateBook>({
-    resolver: zodResolver(UpdateBookSchema),
+export default function UpdateBookForm({
+  onSave,
+  book,
+}: {
+  onSave: () => void;
+  book: Book;
+}) {
+  const form = useForm<Book>({
+    resolver: zodResolver(BookSchema),
     defaultValues: {
       title: book.title,
       author: book.author,
@@ -59,7 +56,7 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: async (data: UpdateBook) => {
+    mutationFn: async (data: Book) => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
@@ -80,16 +77,19 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["books"] });
       toast.success("Livro atualizado com sucesso!");
+      onSave();
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      toast.error(error.response?.data.message);
+      toast.error(error.response?.data.message || "Erro ao atualizar o livro.");
     },
   });
 
-  const onSubmit = (data: UpdateBook) => {
-    onSave();
+  const onSubmit = (data: Book) => {
     mutate(data);
   };
+
+  // Watch para exibir rating quando status for "Lido"
+  const status = form.watch("status");
 
   return (
     <Form {...form}>
@@ -99,7 +99,7 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Titulo</FormLabel>
+              <FormLabel>Título</FormLabel>
               <FormControl>
                 <Input placeholder="Ex: Dom Casmurro" {...field} />
               </FormControl>
@@ -107,6 +107,7 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="author"
@@ -120,6 +121,7 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
             </FormItem>
           )}
         />
+
         <div className="flex justify-between gap-2">
           <FormField
             control={form.control}
@@ -129,12 +131,9 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
                 <FormLabel>Status</FormLabel>
                 <FormControl>
                   <Select
-                    {...field}
+                    onValueChange={field.onChange}
                     value={field.value}
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      setNewBook({ ...newBook, status: value });
-                    }}
+                    defaultValue={field.value}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione uma categoria" />
@@ -150,18 +149,19 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
               </FormItem>
             )}
           />
-          {newBook.status == "Lido" && (
+
+          {status === "Lido" && (
             <FormField
               control={form.control}
               name="rating"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Rating</FormLabel>
+                  <FormLabel>Nota</FormLabel>
                   <FormControl>
                     <Select
-                      {...field}
-                      value={field.value?.toString()}
                       onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma nota" />
@@ -181,9 +181,17 @@ export default function UpdateBookForm({ onSave, book }: { onSave: () => void, b
             />
           )}
         </div>
-        <Button className="w-full">Salvar</Button>
+
+        <Button className="w-full" type="submit">
+          Salvar
+        </Button>
       </form>
-      <Button variant="outline" onClick={() => onSave()}>
+
+      <Button
+        variant="outline"
+        className="mt-2"
+        onClick={() => onSave()}
+      >
         Cancelar
       </Button>
     </Form>

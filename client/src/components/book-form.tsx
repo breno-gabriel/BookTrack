@@ -178,9 +178,9 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
             />
           )}
         </div>
-        <Button className="w-full">Salvar</Button>
+        <Button className="w-full cursor-pointer">Salvar</Button>
       </form>
-      <Button variant="outline" onClick={() => onSave()}>
+      <Button variant="outline" className="cursor-pointer" onClick={() => onSave()}>
         Cancelar
       </Button>
     </Form>

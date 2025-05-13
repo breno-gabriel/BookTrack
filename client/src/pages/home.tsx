@@ -6,7 +6,7 @@ import { Book } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { Plus, Pencil, LogOut } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {

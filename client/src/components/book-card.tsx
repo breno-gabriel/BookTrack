@@ -10,9 +10,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { Pencil, Trash } from "lucide-react";
 import { toast } from "sonner";
+import { Book } from "../utils/utils";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Book } from "../utils/utils";
 
 interface BookProps {
   book: Book;
@@ -20,7 +20,11 @@ interface BookProps {
   setUpdateOpen: (open: boolean) => void;
 }
 
-export default function BookCard({ book, setCurrentBook, setUpdateOpen }: BookProps) {
+export default function BookCard({
+  book,
+  setCurrentBook,
+  setUpdateOpen,
+}: BookProps) {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
