@@ -63,8 +63,8 @@ export function SignUpForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Bem vindo de volta !</CardTitle>
-          <CardDescription>Faça login para continuar</CardDescription>
+          <CardTitle className="text-xl">Crie sua conta</CardTitle>
+          <CardDescription>Insira seus dados para se registrar</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
