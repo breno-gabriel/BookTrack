@@ -7,10 +7,8 @@ import { Book } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { LogOut, Plus, Upload } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
 import { useState } from "react";
-import { CSVLink, CSVDownload } from "react-csv";
-
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
