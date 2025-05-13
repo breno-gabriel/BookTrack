@@ -1,11 +1,11 @@
 import AddBookDialog from "@/components/add-book-dialog";
 import BookCard from "@/components/book-card";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {jwtDecode} from "jwt-decode";
 
 interface Book {
   id: number;
@@ -17,8 +17,6 @@ interface Book {
 
 export default function Home() {
   const [open, setOpen] = useState(false);
-
-  const queryClient = useQueryClient();
 
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode<{ id: number }>(token) : null;

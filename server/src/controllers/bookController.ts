@@ -68,8 +68,7 @@ async function getBooksByUserIdController(req: Request, res: Response) {
 export {
   createBookController,
   deleteBookController,
-  getBookByIdController,
-  getBooksController,
-  updateBookController,
-  getBooksByUserIdController,
+  getBookByIdController, getBooksByUserIdController, getBooksController,
+  updateBookController
 };
+
