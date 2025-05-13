@@ -1,12 +1,29 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config/jwt";
-import { CreateUserDTO, LoginUserDTO } from "../interfaces/user";
 import { getUserByEmail, insertUser } from "../repositories/userRepository";
+import z from "zod";
+
+const createUserSchema = z.object({
+  name: z.string().min(3, "Name must have at least 3 characters"),
+  email: z.string().email("Digite um email válido"),
+  password: z.string().min(8, "Password must have at least 8 characters"),
+});
+
+const loginUserSchema = z.object({
+  email: z.string().email("Digite um email válido"),
+  password: z.string().min(8, "Password must have at least 8 characters"),
+});
+
+type CreateUserDTO = z.infer<typeof createUserSchema>;
+type LoginUserDTO = z.infer<typeof loginUserSchema>;
 
 async function validateUserRegister({ name, email, password }: CreateUserDTO) {
-  if (!name || !email || !password) {
-    throw { code: 400, message: "Missing required fields" };
+
+  const result = createUserSchema.safeParse({ name, email, password });
+
+  if (!result.success) {
+    return { code: 400, message: result.error.format() };
   }
 
   const user = await getUserByEmail(email);
@@ -27,6 +44,8 @@ async function validateUserRegister({ name, email, password }: CreateUserDTO) {
 
 async function validateUserLogin({ email, password }: LoginUserDTO) {
   const user = await getUserByEmail(email);
+
+  loginUserSchema.parse({ email, password });
 
   if (user.length == 0 || !(await bcrypt.compare(password, user[0].password))) {
     return { code: 400, message: "wrong email or password" };
