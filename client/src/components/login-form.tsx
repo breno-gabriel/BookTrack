@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import axiosClient from "@/utils/axios-client";
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -38,10 +39,11 @@ export function LoginForm({
 
   const navigate = useNavigate();
 
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: LoginForm) => {
-      const response = await axios.post(
-        "http://localhost:3000/auth/login",
+      const response = await axiosClient.post(
+        `/login`,
         data
       );
       return response.data;
