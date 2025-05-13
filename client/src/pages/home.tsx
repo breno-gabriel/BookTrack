@@ -41,6 +41,8 @@ export default function Home() {
       return response.data["books"];
     },
   });
+
+
   console.log(data);
   return (
     <div className="container mx-auto py-8 px-4">
@@ -68,7 +70,7 @@ export default function Home() {
             Adicionar livro
           </Button>
 
-          <ExportCSVButton data={data} />
+          <ExportCSVButton />
         </div>
         <AddBookDialog open={open} onOpenChange={setOpen} />
         <UpdateBookDialog
