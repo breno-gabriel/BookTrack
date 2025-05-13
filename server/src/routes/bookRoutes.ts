@@ -6,6 +6,7 @@ import {
   getBooksController,
   updateBookController,
   getBooksByUserIdController,
+  exportBooksController,
 } from "../controllers/bookController";
 import { authenticateToken } from "../middlewares/authMiddleware";
 
@@ -17,4 +18,5 @@ bookRouter.get("/:id", authenticateToken, getBookByIdController);
 bookRouter.delete("/delete/:id", authenticateToken, deleteBookController);
 bookRouter.put("/update/:id", authenticateToken, updateBookController);
 bookRouter.get("/user/:id", authenticateToken, getBooksByUserIdController);
+bookRouter.get("/export_csv/:id", authenticateToken, exportBooksController);
 export { bookRouter };

@@ -1,13 +1,15 @@
 import AddBookDialog from "@/components/add-book-dialog";
 import BookCard from "@/components/book-card";
+import ExportCSVButton from "@/components/export-button";
 import { Button } from "@/components/ui/button";
 import UpdateBookDialog from "@/components/update-book-dialog";
 import { Book } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { LogOut, Plus } from "lucide-react";
+import { LogOut, Plus, Upload } from "lucide-react";
 import { useState } from "react";
+import { CSVLink, CSVDownload } from "react-csv";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -60,10 +62,14 @@ export default function Home() {
           <LogOut className="mr-2 h-4 w-4" />
           Sair
         </Button>
-        <Button className="p-6 cursor-pointer" onClick={() => setOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Adicionar livro
-        </Button>
+        <div className="flex gap-4">
+          <Button className="p-6 cursor-pointer" onClick={() => setOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Adicionar livro
+          </Button>
+
+          <ExportCSVButton data={data} />
+        </div>
         <AddBookDialog open={open} onOpenChange={setOpen} />
         <UpdateBookDialog
           open={updateOpen}

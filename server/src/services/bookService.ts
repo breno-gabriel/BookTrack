@@ -8,6 +8,7 @@ import {
   updateBookRepository,
 } from "../repositories/bookRepository";
 import { getUserById } from "../repositories/userRepository";
+import { Parser } from "json2csv";
 
 async function createBookService(
   { title, author, status, rating }: createBook,
@@ -121,6 +122,18 @@ async function getBooksByUserIdService(user_id: number) {
   return userBooks;
 }
 
+async function exportBooksService(user_id: number) {
+  const user = await getUserById(user_id);
+  if (!user) {
+    return { status: 404, message: "Usuário não encontrado" };
+  }
+  const books = await getBooksByUserIdService(user_id);
+  const fields = ['title', 'author', 'status', 'rating', 'conclusion_date'];
+  const json2csv = new Parser({ fields, header: true });
+  const csv = json2csv.parse(books);
+  return csv;
+}
+
 export {
   createBookService,
   deleteBookService,
@@ -128,4 +141,5 @@ export {
   getBooksService,
   updateBookService,
   getBooksByUserIdService,
+  exportBooksService,
 };

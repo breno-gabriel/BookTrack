@@ -3,11 +3,13 @@ import { createBook, updateBook } from "../interfaces/book";
 import {
   createBookService,
   deleteBookService,
+  exportBooksService,
   getBookByIdService,
   getBooksByUserIdService,
   getBooksService,
   updateBookService,
 } from "../services/bookService";
+import { getUserByIdService } from "../services/userService";
 
 async function createBookController(req: Request, res: Response) {
   try {
@@ -93,10 +95,25 @@ async function getBooksByUserIdController(req: Request, res: Response) {
   }
 }
 
+async function exportBooksController(req: Request, res: Response) {
+  try {
+    const booksCsv = await exportBooksService(req.params.id);
+    res.header('Content-Type', 'text/csv');
+    res.attachment('meus_livros.csv'); 
+    res.send(booksCsv);
+    return;
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export {
   createBookController,
   deleteBookController,
-  getBookByIdController, getBooksByUserIdController, getBooksController,
-  updateBookController
+  getBookByIdController,
+  getBooksByUserIdController,
+  getBooksController,
+  updateBookController,
+  exportBooksController,
 };
-
