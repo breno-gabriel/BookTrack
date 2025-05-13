@@ -54,7 +54,7 @@ export default function BookForm({ onSave }: { onSave: () => void }) {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:3000/books/create",
+        `${import.meta.env.VITE_API_URL}/books/create`,
         {
           ...data,
           rating: data.rating ? Number(data.rating) : undefined,

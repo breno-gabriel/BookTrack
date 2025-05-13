@@ -59,7 +59,7 @@ export default function UpdateBookForm({
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        `http://localhost:3000/books/update/${book.id}`,
+        `${import.meta.env.VITE_API_URL}/books/update/${book.id}`,
         {
           ...data,
           rating: data.rating ? Number(data.rating) : undefined,

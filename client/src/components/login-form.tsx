@@ -9,10 +9,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import axiosClient from "@/utils/axios-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -42,8 +41,8 @@ export function LoginForm({
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: LoginForm) => {
-      const response = await axiosClient.post(
-        `/login`,
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/login`,
         data
       );
       return response.data;

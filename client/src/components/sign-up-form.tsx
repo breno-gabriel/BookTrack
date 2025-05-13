@@ -42,7 +42,7 @@ export function SignUpForm({
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: SignUpForm) => {
       const response = await axios.post(
-        "http://localhost:3000/auth/register",
+        `${import.meta.env.VITE_API_URL}/auth/register`,
         data
       );
       return response.data;

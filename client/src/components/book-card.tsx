@@ -32,7 +32,7 @@ export default function BookCard({
       const token = localStorage.getItem("token");
 
       const response = await axios.delete(
-        `http://localhost:3000/books/delete/${bookId}`,
+        `${import.meta.env.VITE_API_URL}/books/delete/${bookId}`,
         {
           headers: {
             Authorization: token,

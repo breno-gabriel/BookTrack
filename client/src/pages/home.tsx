@@ -28,7 +28,7 @@ export default function Home() {
     queryKey: ["books"],
     queryFn: async () => {
       const response = await axios.get(
-        `http://localhost:3000/books/user/${userId}`,
+        `${import.meta.env.VITE_API_URL}/books/user/${userId}`,
         {
           headers: {
             Authorization: token,

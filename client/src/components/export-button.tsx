@@ -14,7 +14,7 @@ export default function ExportCSVButton() {
       const userId = decoded.id;
 
       const response = await axios.get(
-        `http://localhost:3000/books/export_csv/${userId}`,
+        `${import.meta.env.VITE_API_URL}/books/export_csv/${userId}`,
         {
           headers: {
             Authorization: token,
