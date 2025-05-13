@@ -92,12 +92,11 @@ export default function BookCard({
           <Trash className="mr-2 h-4 w-4" />
           Deletar
         </Button>
-        {status != "Lido" && (
-          <Button variant="default" className="px-4 cursor-pointer">
-            <Pencil className="mr-2 h-4 w-4" />
-            Editar
-          </Button>
-        )}
+
+        <Button variant="default" className="px-4 cursor-pointer" disabled={status === "Lido"}>
+          <Pencil className="mr-2 h-4 w-4" />
+          Editar
+        </Button>
       </CardFooter>
     </Card>
   );
