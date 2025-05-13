@@ -48,7 +48,7 @@ export default function UpdateBookForm({
       title: book.title,
       author: book.author,
       status: book.status,
-      rating: book.rating,
+      rating: book.rating || "",
     },
   });
 
