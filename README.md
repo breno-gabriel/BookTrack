@@ -17,30 +17,46 @@ Para executar o projeto, será necessário seguir os seguintes passos:
 5. 
 Ao seguir esses passos, tanto o frontend quanto o backend deverão estar funcionando.
 
+OBS: Além de seguir os passos acima, é necessário criar um arquivo .env no diretorio de client e outro no diretorio de server 
+
+## client .env 
+
+```
+VITE_API_URL=http://localhost:3000
+
+```
+
+## server .env 
+
+```
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/booktrack
+PORT=3000 
+SECRET="shhhh é segredo"
+CORS_ORIGIN=http://localhost:5173
+
+```
+
 ---
 ## 🐳 **Configuração Docker**
 ```yml
-# docker-compose.yml
 version: '3.8'
-services:
-  db:
-    image: mongo:6.0
-    ports:
-      - "27017:27017"
-    volumes:
-      - booktrack-data:/data/db
 
-  server:
-    build: ./server
-    ports:
-      - "3001:3001"
-    depends_on:
-      - db
+services:
+  postgres:
+    image: postgres:15
+    container_name: booktrack-db
     environment:
-      - DB_URL=mongodb://db:27017/booktrack
+      POSTGRES_DB: booktrack
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  booktrack-data:
+  pgdata:
+
 ```
 
 ## Rotas da aplicação 
