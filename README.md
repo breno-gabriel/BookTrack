@@ -242,6 +242,11 @@ A aplicação também está disponível no render.
 
 https://booktrack-1-6nij.onrender.com/
 
+Usuario apra teste: 
+
+email bgml@cin.ufpe.br
+senha: 123456789
+
 OBS: A primeira requisição deve demorar pelo menos 50 segundos. Isso porque a plataforma coloca o servidor em hibernação após um périodo de inatividade. 
 
 ## 📚 Recursos Adicionais
