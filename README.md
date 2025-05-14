@@ -248,6 +248,12 @@ email bgml@cin.ufpe.br
 senha: 123456789
 
 OBS: A primeira requisição deve demorar pelo menos 50 segundos. Isso porque a plataforma coloca o servidor em hibernação após um périodo de inatividade. 
+OBS: Caso nao seja possivel cadastrar o usuario pelo frontend, busque adiciona-lo pelo deploy da API. 
+
+Link da API: https://booktrack-tj2q.onrender.com
+
+Juntanto com os deatalhes das rotas, o caminho seria algo como https://booktrack-tj2q.onrender.com/auth/register
+
 
 ## 📚 Recursos Adicionais
 
