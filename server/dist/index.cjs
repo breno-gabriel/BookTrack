@@ -237,7 +237,7 @@ var bookSchema = import_zod2.z.object({
   rating: import_zod2.z.number().int().min(1, "Avalia\xE7\xE3o deve ser no m\xEDnimo 1").max(5, "Avalia\xE7\xE3o deve ser no m\xE1ximo 5").optional().nullable()
 }).superRefine((data, ctx) => {
   const isRead = data.status === "Lido";
-  const hasRating = data.rating !== null;
+  const hasRating = data.rating !== null && data.rating !== void 0;
   if (hasRating && !isRead) {
     ctx.addIssue({
       path: ["rating"],

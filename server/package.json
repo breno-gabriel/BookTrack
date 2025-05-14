@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsup src/index.ts",
     "start:dev": "tsx watch --clear-screen=false src/index.ts",
-    "start:prod": "node dist/index.js",
+    "start:prod": "node server/dist/index.js",
     "lint": "biome lint",
     "lint:fix": "biome lint --fix",
     "format": "biome format --write",
