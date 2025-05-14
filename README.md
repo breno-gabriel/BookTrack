@@ -236,8 +236,13 @@ Além disso, também temos:
 - Db: Contém a configuração e inicialização do banco de dados. Neste projeto, foi utilizado o Drizzle ORM.
 - Dto: Agrupa os Data Transfer Objects (DTOs) usados para tipar e validar os dados transferidos entre as camadas da aplicação. Aqui estão definidos os DTOs de usuários e livros.
 
+## Versão em produção. 
 
+A aplicação também está disponível no render. 
 
+https://booktrack-1-6nij.onrender.com/
+
+OBS: A primeira requisição deve demorar pelo menos 50 segundos. Isso porque a plataforma coloca o servidor em hibernação após um périodo de inatividade. 
 
 ## 📚 Recursos Adicionais
 
