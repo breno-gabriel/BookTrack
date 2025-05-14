@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createBook, updateBook } from "../interfaces/book";
+import { createBook, updateBook } from "../dto/book";
 import {
   createBookService,
   deleteBookService,
