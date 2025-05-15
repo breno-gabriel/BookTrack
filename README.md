@@ -11,10 +11,11 @@ ou já leu.
 Para executar o projeto, será necessário seguir os seguintes passos: 
 
 1. Dirija-se ao diretorio ***server*** e instale as depêndencias através do comando `npm install`
-2. Na pasta ***server***, execute o comando `docker compose up` para criar o banco de dados (o arquivo ***docker-compose.yml*** deve estar dentro do diretorio ***server***) 
-3. Em outro terminal, dirija-se novamente a pasta ***service*** e execute o comando `npm run start:dev` para iniciar o servidor
-4. Em um novo terminal, dirija-se ao diretório ***client*** e execute o comando `npm install` para instalar as dependências. Em seguida, no mesmo terminal, execute o comando `npm run dev`
-5. 
+2. Na pasta ***server***, execute o comando `docker compose up` para criar o banco de dados (o arquivo ***docker-compose.yml*** deve estar dentro do diretorio ***server***)
+3. execute o comando **npm run migrate**
+4. Em outro terminal, dirija-se novamente a pasta ***service*** e execute o comando `npm run start:dev` para iniciar o servidor
+5. Em um novo terminal, dirija-se ao diretório ***client*** e execute o comando `npm install` para instalar as dependências. Em seguida, no mesmo terminal, execute o comando `npm run dev`
+
 Ao seguir esses passos, tanto o frontend quanto o backend deverão estar funcionando.
 
 OBS: Além de seguir os passos acima, é necessário criar um arquivo .env no diretorio de client e outro no diretorio de server 
